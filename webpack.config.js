@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const RemovePlugin = require('remove-files-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 const isDevelopment = true;
 
@@ -104,6 +105,13 @@ module.exports = {
     // bundle SASS and CSS files.
     new MiniCssExtractPlugin({
       filename: 'styles/[name].css',
+    }),
+    new BrowserSyncPlugin({
+      // browse to http://localhost:3000/ during development,
+      // ./public directory is being served
+      host: 'localhost',
+      port: 3000,
+      server: { baseDir: ['./'] },
     }),
   ],
   resolve: {

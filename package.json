@@ -14,6 +14,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "browser-sync-webpack-plugin": "^2.3.0",
     "css-loader": "^6.7.3",
     "cytoscape": "^3.23.0",
     "cytoscape-avsdf": "^1.0.0",
