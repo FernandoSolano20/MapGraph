@@ -2,7 +2,8 @@ import haversine from '../util/haversine';
 import Country from './country';
 
 export default class Graph {
-  #values = {};
+  // Hash table to create
+  #countries = [];
 
   #edges = null;
 
@@ -13,40 +14,44 @@ export default class Graph {
     this.#edges = new Array(this.#length);
     for (let i = 0; i < this.#length; i += 1) {
       const country = new Country(countries[i]);
-      this.#values[country.code] = country;
+      // Create the Hash method to insert the country
+      // the variable i must match with the index of the hash
+      this.#countries[i] = country;
       this.#edges[i] = new Array(this.#length);
       for (let j = 0; j < this.#length; j += 1) {
         this.#edges[i][j] = Infinity;
       }
     }
 
-    const keys = this.#getKeys();
-    keys.forEach((origin, indexOrigin) => {
-      keys.forEach((destination, indexDestination) => {
-        if (this.#values[origin].borders.includes(destination)) {
-          this.#edges[indexOrigin][indexDestination] = haversine(
-            this.#values[origin].coordinates,
-            this.#values[destination].coordinates
+    for (let i = 0; i < this.#length; i += 1) {
+      const country = countries[i];
+      const originIndex = this.#getIndexByKey(country.cca3);
+      country?.borders.forEach((key) => {
+        const destinationIndex = this.#getIndexByKey(key);
+        if (this.#countries[destinationIndex]?.coordinates) {
+          this.#edges[originIndex][destinationIndex] = haversine(
+            this.#countries[originIndex].coordinates,
+            this.#countries[destinationIndex].coordinates
           ).toFixed(2);
         }
       });
-    });
+    }
   }
 
-  #getKeys() {
-    return Object.keys(this.#values);
+  #getIndexByKey(key) {
+    return this.#countries.findIndex((country) => country.code === key);
   }
 
   getAllNodes() {
-    const keys = this.#getKeys();
     const values = [];
-    keys.forEach((key) => values.push(this.#values[key]));
+    this.#countries.forEach((country) => {
+      values.push(country);
+    });
     return values;
   }
 
   getAllEdges() {
     const values = [];
-    const keys = this.#getKeys();
     for (let i = 0; i < this.#length; i += 1) {
       const origin = this.#edges[i];
       for (let j = 0; j < this.#length; j += 1) {
@@ -54,8 +59,8 @@ export default class Graph {
         if (destination !== Infinity) {
           values.push({
             data: {
-              source: keys[i],
-              target: keys[j],
+              source: this.#countries[i].code,
+              target: this.#countries[j].code,
               value: destination,
             },
           });
