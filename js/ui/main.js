@@ -1,10 +1,14 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import cytoscape from 'cytoscape';
 import avsdf from 'cytoscape-avsdf';
+import Controller from '../dl/controller';
 
-cytoscape.use(avsdf);
-
-document.addEventListener('DOMContentLoaded', () => {
+const controller = new Controller();
+controller.createGraph().then(() => {
+  cytoscape.use(avsdf);
+  const vertices = controller.getAllNodes();
+  const nodes = vertices.map((vertice) => ({ data: { id: vertice.code } }));
+  const edges = controller.getAllEdges();
   cytoscape({
     container: document.getElementById('graph'),
 
@@ -36,29 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ],
 
     elements: {
-      nodes: [
-        { data: { id: 'v1', weight: 1 } },
-        { data: { id: 'v2', weight: 2 } },
-        { data: { id: 'v3', weight: 3 } },
-        { data: { id: 'v4', weight: 4 } },
-        { data: { id: 'v5', weight: 5 } },
-        { data: { id: 'v6', weight: 6 } },
-        { data: { id: 'v7', weight: 7 } },
-      ],
-      edges: [
-        { data: { source: 'v1', target: 'v2', directed: 'true', value: 10 } },
-        { data: { source: 'v1', target: 'v4', directed: 'false', value: 10 } },
-        { data: { source: 'v1', target: 'v5', directed: 'false', value: 10 } },
-        { data: { source: 'v2', target: 'v4', directed: 'false', value: 10 } },
-        { data: { source: 'v2', target: 'v6', directed: 'false', value: 10 } },
-        { data: { source: 'v3', target: 'v4', directed: 'false', value: 10 } },
-        { data: { source: 'v3', target: 'v7', directed: 'false', value: 10 } },
-        { data: { source: 'v4', target: 'v5', directed: 'false', value: 10 } },
-        { data: { source: 'v4', target: 'v7', directed: 'false', value: 10 } },
-        { data: { source: 'v5', target: 'v6', directed: 'false', value: 10 } },
-        { data: { source: 'v6', target: 'v7', directed: 'false', value: 10 } },
-        { data: { source: 'v6', target: 'v3', directed: 'false', value: 10 } },
-      ],
+      nodes,
+      edges,
     },
   });
 });
