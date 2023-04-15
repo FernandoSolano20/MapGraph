@@ -3,7 +3,7 @@ import avsdf from 'cytoscape-avsdf';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Swal from 'sweetalert2';
 import Controller from '../dl/controller';
-import SelectCountry from './countries/selectCountry';
+import SelectCountry from './components/selectCountry';
 
 const controller = new Controller();
 controller.createGraph().then(() => {
