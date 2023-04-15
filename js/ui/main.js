@@ -1,14 +1,18 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import cytoscape from 'cytoscape';
 import avsdf from 'cytoscape-avsdf';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Swal from 'sweetalert2';
 import Controller from '../dl/controller';
+import SelectCountry from './countries/selectCountry';
 
 const controller = new Controller();
 controller.createGraph().then(() => {
   cytoscape.use(avsdf);
-  const vertices = controller.getAllNodes();
-  const nodes = vertices.map((vertice) => ({ data: { id: vertice.code } }));
+  const countries = controller.getAllNodes();
+  const nodes = countries.map((vertice) => ({ data: { id: vertice.code } }));
   const edges = controller.getAllEdges();
+  const selectOriginCountry = new SelectCountry(countries);
+  const selectDestinationCountry = new SelectCountry(countries, 'destination');
   cytoscape({
     container: document.getElementById('graph'),
 
@@ -43,5 +47,24 @@ controller.createGraph().then(() => {
       nodes,
       edges,
     },
+  });
+
+  document.querySelector('#min_path_country').addEventListener('click', async () => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Distancia mínima entre países',
+      html: `<label>Seleccione un país<label>${selectOriginCountry.html}
+      <label>Seleccione un país<label>${selectDestinationCountry.html}`,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => ({
+        origin: document.getElementById('origin').value,
+        destination: document.getElementById('destination').value,
+      }),
+    });
+
+    if (formValues) {
+      Swal.fire(`Origen: ${formValues.origin}
+      Destino: ${formValues.destination}`);
+    }
   });
 });

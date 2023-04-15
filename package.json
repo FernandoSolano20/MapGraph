@@ -29,6 +29,7 @@
     "remove-files-webpack-plugin": "^1.5.0",
     "sass": "^1.62.0",
     "sass-loader": "^13.2.2",
+    "sweetalert2": "^11.7.3",
     "terser-webpack-plugin": "^5.3.7",
     "webpack-assets-manifest": "^5.1.0",
     "webpack-bundle-analyzer": "^4.8.0"
