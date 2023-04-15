@@ -8,7 +8,7 @@ import SelectCountry from './countries/selectCountry';
 const controller = new Controller();
 controller.createGraph().then(() => {
   cytoscape.use(avsdf);
-  const countries = controller.getAllNodes();
+  const countries = controller.getAllCountries();
   const nodes = countries.map((vertice) => ({ data: { id: vertice.code } }));
   const edges = controller.getAllEdges();
   const selectOriginCountry = new SelectCountry(countries);

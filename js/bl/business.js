@@ -10,7 +10,7 @@ export default class Business {
     return true;
   }
 
-  getAllNodes() {
+  getAllCountries() {
     return this.#graph.getAllNodes();
   }
 
