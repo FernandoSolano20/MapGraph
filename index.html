@@ -6,10 +6,35 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
   <title>Mapas</title>
   <link href="dist/styles/styles.css" rel="stylesheet">
+  <link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+  rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css"
+  rel="stylesheet"
+/>
 </head>
 <body>
 
-  <div id="graph"></div>
+  <div class="row w-100">
+    <div class="col-lg-6 my-4">
+      <div id="graph"></div>
+    </div>
+    <div class="col-lg-6 my-4 d-flex align-items-center">
+      <div>
+        <button type="button" class="btn btn-primary" id="min_path_country">
+          Distancia mínima entre países
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script defer src="dist/modules/main.js"></script>
 </body>

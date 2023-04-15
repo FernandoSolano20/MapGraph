@@ -1,8 +1,3 @@
-body {
-  font-family: helvetica;
-  font-size: 15px;
-}
-
 #graph {
   width: 100%;
   height: 90vh;
@@ -19,4 +14,8 @@ body {
 
 .radio {
   margin-left: 25px;
+}
+
+#swal2-html-container {
+  overflow: hidden;
 }
