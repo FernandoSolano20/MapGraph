@@ -19,4 +19,12 @@ export default class Controller {
   getAllEdges() {
     return this.#bl.getAllEdges();
   }
+
+  getMinPath(origin, destination) {
+    return this.#bl.getMinPath(origin, destination);
+  }
+
+  getCountryByCode(code) {
+    return this.#bl.getCountryByCode(code);
+  }
 }

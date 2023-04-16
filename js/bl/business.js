@@ -17,4 +17,12 @@ export default class Business {
   getAllEdges() {
     return this.#graph.getAllEdges();
   }
+
+  getMinPath(origin, destination) {
+    return this.#graph.dijkstra(origin, destination);
+  }
+
+  getCountryByCode(code) {
+    return this.#graph.getCountryByCode(code);
+  }
 }

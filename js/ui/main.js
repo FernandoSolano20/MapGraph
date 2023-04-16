@@ -63,8 +63,14 @@ controller.createGraph().then(() => {
     });
 
     if (formValues) {
-      Swal.fire(`Origen: ${formValues.origin}
-      Destino: ${formValues.destination}`);
+      const result = controller.getMinPath(formValues.origin, formValues.destination);
+      if (result.path.length) {
+        Swal.fire(`El camino mínimo es: ${result.path.join(' -> ')} con una distancia de ${result.cost} km`);
+      } else {
+        const countryOrigin = controller.getCountryByCode(formValues.origin);
+        const countryDestination = controller.getCountryByCode(formValues.destination);
+        Swal.fire(`No hay camino entre ${countryOrigin.name} y ${countryDestination.name}`);
+      }
     }
   });
 });
