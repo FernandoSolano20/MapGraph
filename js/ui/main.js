@@ -65,7 +65,32 @@ controller.createGraph().then(() => {
     if (formValues) {
       const result = controller.getMinPath(formValues.origin, formValues.destination);
       if (result.path.length) {
-        Swal.fire(`El camino mínimo es: ${result.path.join(' -> ')} con una distancia de ${result.cost} km`);
+        Swal.fire(`El camino mínimo es: ${result.path.join(' -> ')} con una distancia de ${result.cost.toFixed(2)} km`);
+      } else {
+        const countryOrigin = controller.getCountryByCode(formValues.origin);
+        const countryDestination = controller.getCountryByCode(formValues.destination);
+        Swal.fire(`No hay camino entre ${countryOrigin.name} y ${countryDestination.name}`);
+      }
+    }
+  });
+
+  document.querySelector('#max_path_country').addEventListener('click', async () => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Distancia máxima entre países',
+      html: `<label>Seleccione un país<label>${selectOriginCountry.html}
+      <label>Seleccione un país<label>${selectDestinationCountry.html}`,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => ({
+        origin: document.getElementById('origin').value,
+        destination: document.getElementById('destination').value,
+      }),
+    });
+
+    if (formValues) {
+      const result = controller.getMaxPath(formValues.origin, formValues.destination);
+      if (result.path.length) {
+        Swal.fire(`El camino máximo es: ${result.path.join(' -> ')} con una distancia de ${result.cost.toFixed(2)} km`);
       } else {
         const countryOrigin = controller.getCountryByCode(formValues.origin);
         const countryDestination = controller.getCountryByCode(formValues.destination);

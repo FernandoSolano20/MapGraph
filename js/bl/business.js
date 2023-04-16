@@ -19,7 +19,11 @@ export default class Business {
   }
 
   getMinPath(origin, destination) {
-    return this.#graph.dijkstra(origin, destination);
+    return this.#graph.getMinPath(origin, destination);
+  }
+
+  getMaxPath(origin, destination) {
+    return this.#graph.getMaxPath(origin, destination);
   }
 
   getCountryByCode(code) {

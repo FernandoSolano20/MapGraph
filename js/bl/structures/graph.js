@@ -46,27 +46,18 @@ export default class Graph {
     return array.reduce((acc, value, index) => (value !== Infinity ? [...acc, index] : acc), []);
   }
 
-  #formatGraph() {
+  #formatGraph(orden) {
     const tmp = {};
     this.#edges.forEach((originEdge, originIndex) => {
       const indexes = this.#getAllAdjacencyIndexes(originEdge);
       const origin = this.#countries.getValueByIndex(originIndex);
       const values = indexes.map((index) => ({
         vertex: this.#countries.getValueByIndex(index),
-        cost: originEdge[index],
+        cost: originEdge[index] * orden,
       }));
       tmp[origin.code] = values;
     });
     return tmp;
-  }
-
-  #printTable(table) {
-    return Object.keys(table)
-      .map((vertex) => {
-        const { vertex: from, cost } = table[vertex];
-        return `${vertex}: ${cost} via ${from}`;
-      })
-      .join('\n');
   }
 
   #tracePath(table, start, end) {
@@ -84,8 +75,8 @@ export default class Graph {
     return path;
   }
 
-  dijkstra(origin, destination) {
-    const map = this.#formatGraph();
+  #dijkstra(origin, destination, orden = 1) {
+    const map = this.#formatGraph(orden);
 
     const visited = [];
     const unvisited = [origin];
@@ -115,12 +106,9 @@ export default class Graph {
       vertex = unvisited.shift();
     }
 
-    console.log('Table of costs:');
-    console.log(this.#printTable(shortestDistances));
-
     return {
       path: this.#tracePath(shortestDistances, origin, destination),
-      cost: shortestDistances[destination]?.cost,
+      cost: (shortestDistances[destination]?.cost || 0) * orden,
     };
   }
 
@@ -157,5 +145,13 @@ export default class Graph {
 
   getCountryByCode(code) {
     return this.#countries.get(code);
+  }
+
+  getMinPath(origin, destination) {
+    return this.#dijkstra(origin, destination);
+  }
+
+  getMaxPath(origin, destination) {
+    return this.#dijkstra(origin, destination, -1);
   }
 }

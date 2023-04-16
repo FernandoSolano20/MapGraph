@@ -24,6 +24,10 @@ export default class Controller {
     return this.#bl.getMinPath(origin, destination);
   }
 
+  getMaxPath(origin, destination) {
+    return this.#bl.getMaxPath(origin, destination);
+  }
+
   getCountryByCode(code) {
     return this.#bl.getCountryByCode(code);
   }
