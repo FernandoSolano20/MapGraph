@@ -31,9 +31,9 @@ controller.createGraph().then(() => {
       // Whether to enable incremental mode
       randomize: true,
       // Ideal (intra-graph) edge length
-      idealEdgeLength: 250,
+      idealEdgeLength: 150,
       // Divisor to compute edge forces
-      edgeElasticity: 0.29,
+      edgeElasticity: 0.45,
       // Nesting factor (multiplier) to compute ideal edge length for inter-graph edges
       nestingFactor: 1,
       // Gravity force (constant)
