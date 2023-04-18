@@ -85,6 +85,6 @@ export default class HashTable {
   }
 
   getAll() {
-    return this.#table;
+    return this.#table.map((element) => element.value);
   }
 }
