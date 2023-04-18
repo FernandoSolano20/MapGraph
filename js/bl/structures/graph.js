@@ -65,16 +65,12 @@ export default class Graph {
     const path = [];
     let next = end;
 
-    while (table[next]) {
+    while (table[next] !== undefined) {
       path.unshift(this.#countries.get(next).name);
       if (next === start) {
         break;
       }
       next = table[next];
-    }
-
-    if (path.length) {
-      path.unshift(this.#countries.get(next).name);
     }
 
     return path;
@@ -85,7 +81,6 @@ export default class Graph {
     const map = this.#formatGraph(orden);
     const distances = {};
     const visitedNodes = [];
-    const unvisitedNodes = [];
     const queue = [];
     const previousVertex = {};
 
@@ -93,10 +88,10 @@ export default class Graph {
       const code = this.#countries.getValueByIndex(i).code;
       if (code !== origin) {
         distances[code] = Infinity;
-        unvisitedNodes.push(code);
       }
     }
     distances[origin] = 0;
+    previousVertex[origin] = '';
     queue.push(origin);
 
     while (queue.length) {
