@@ -9,9 +9,8 @@ export default class Graph {
   #edges = null; 
 
   #length = 0;
-
-  constructor(countries) {   
-   
+  
+  constructor(countries) {       
     this.#length = countries.length;
     this.#edges = new Array(this.#length);
     this.#countries = new HashTable(this.#length); // Se cambio el .length por el  #hashTableSize
@@ -40,7 +39,7 @@ export default class Graph {
           ).toFixed(2);
         }
       });
-    }
+    }    
   }
 
   getAllNodes() {
@@ -74,40 +73,28 @@ export default class Graph {
 
   getAdjacencyList(code){
     let msj = '';
-    const indexAdyancencia = [];
-    for (let i = 0; i < this.#length; i += 1) {
-      
-      if(code === this.#countries[i].code){
-        const origin = this.#edges[i];
-
-        for(let j = 0; j < this.#length; j += 1){
-            const destination = origin[j];
-            if(destination !== Infinity){
-              indexAdyancencia.push(j);
-            } 
-        }
-        
-
-        if(indexAdyancencia.length ===0){          
-          msj = "El país " +this.#countries[i].name+ " no posee adyacencia";
-        }else{
-          const adyacenciCountries = indexAdyancencia.map((index)=>this.#countries[index].code);
-          const adyacencyNames =[];
-          for(let x = 0; x < this.#length; x += 1){
-            for(let y = 0; y < this.#length; y += 1){
-              if(adyacenciCountries[x] === this.#countries[y].code){
-                adyacencyNames.push(this.#countries[y].name);                
-              }
-            }
-
-          }
-          msj = "El país " +this.#countries[i].name+ " posee adyacencia con " + adyacencyNames.join(", ");
-        }
-        
-
-      }
-
+    const countriesAdjacency = [];
+    const country = this.#countries.get(code);
+    if(!country){
+      return "El país no se encontró";
     }
+
+    const originIndex = this.#countries.getIndexByKey(code);
+    const origin = this.#edges[originIndex];
+    for(let j = 0; j < this.#length; j += 1){
+      const destination = origin[j];
+      if(destination !== Infinity){
+        countriesAdjacency.push(this.#countries.getValueByIndex(j));
+      } 
+    }
+    if(countriesAdjacency.length ===0){          
+      msj = "El país " + country.name + " no posee adyacencias";
+      
+    }else{
+      const adyacencyNames = countriesAdjacency.map((c)=>c.name);
+      msj = "El país " +country.name+ " posee adyacencia con " + adyacencyNames.join(", ");
+    }
+    console.log(msj);
     return msj;
 
   }
