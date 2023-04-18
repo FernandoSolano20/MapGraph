@@ -17,25 +17,26 @@ export default class Graph {
     this.#edges = new Array(this.#length);
     for (let i = 0; i < this.#length; i += 1) {
       const country = new Country(countries[i]);
+      this.#countries.set(country.code, country);
+      const index = this.#countries.getIndexByKey(country.code);
       // Create the Hash method to insert the country
       // the variable i must match with the index of the hash
-      this.#countries.add(country.code, country);
-      const index = this.#countries.getIndexByKey(country.code);
-      this.#edges[index] = new Array(this.#length);
+      this.#edges[index] = new Array(this.#length); // se cambio el i que estaba dentro del arreglo por un index
       for (let j = 0; j < this.#length; j += 1) {
-        this.#edges[index][j] = Infinity;
+        this.#edges[index][j] = Infinity; // Se cambio el i por index
       }
     }
 
     for (let i = 0; i < this.#length; i += 1) {
       const country = countries[i];
       const originIndex = this.#countries.getIndexByKey(country.cca3);
+      // Se cambio el #getIndexByKey por el metodo hash
       country?.borders.forEach((key) => {
-        const destinationIndex = this.#countries.getIndexByKey(key);
-        if (this.#countries.getValueByIndex(destinationIndex)?.coordinates) {
+        const destinationIndex = this.#countries.getIndexByKey(key); // Se cambio el #getIndexByKey por el metodo hash
+        if (this.#countries.get(key)?.coordinates) {
           this.#edges[originIndex][destinationIndex] = +haversine(
-            this.#countries.getValueByIndex(originIndex)?.coordinates,
-            this.#countries.getValueByIndex(destinationIndex)?.coordinates
+            this.#countries.get(country.cca3).coordinates,
+            this.#countries.get(key).coordinates
           ).toFixed(2);
         }
       });
@@ -110,8 +111,6 @@ export default class Graph {
       path: this.#tracePath(shortestDistances, origin, destination),
       cost: (shortestDistances[destination]?.cost || 0) * orden,
     };
-  }
-
   getAllNodes() {
     const values = [];
     this.#countries.getAll().forEach((country) => {
@@ -130,8 +129,8 @@ export default class Graph {
           if (destination !== Infinity) {
             values.push({
               data: {
-                source: this.#countries.getValueByIndex(i).code,
-                target: this.#countries.getValueByIndex(j).code,
+              source: this.#countries.getValueByIndex(i)?.code,
+              target: this.#countries.getValueByIndex(j)?.code,
                 value: destination,
               },
             });
@@ -141,6 +140,31 @@ export default class Graph {
     }
 
     return values;
+  }
+
+  getAdjacencyList(code) {
+    let msj = '';
+    const countriesAdjacency = [];
+    const country = this.#countries.get(code);
+    if (!country) {
+      return 'El país no se encontró';
+    }
+
+    const originIndex = this.#countries.getIndexByKey(code);
+    const origin = this.#edges[originIndex];
+    for (let j = 0; j < this.#length; j += 1) {
+      const destination = origin[j];
+      if (destination !== Infinity) {
+        countriesAdjacency.push(this.#countries.getValueByIndex(j));
+      }
+    }
+    if (countriesAdjacency.length === 0) {
+      msj = 'El país ' + country.name + ' no posee adyacencias';
+    } else {
+      const adyacencyNames = countriesAdjacency.map((c) => c.name);
+      msj = 'El país ' + country.name + ' posee adyacencia con ' + adyacencyNames.join(', ');
+    }
+    return msj;
   }
 
   getCountryByCode(code) {

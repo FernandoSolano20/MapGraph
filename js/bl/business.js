@@ -18,6 +18,10 @@ export default class Business {
     return this.#graph.getAllEdges();
   }
 
+  getAdjacencyList(code){
+    return this.#graph.getAdjacencyList(code);
+  }
+
   getMinPath(origin, destination) {
     return this.#graph.getMinPath(origin, destination);
   }

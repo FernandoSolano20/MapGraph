@@ -20,6 +20,10 @@ export default class Controller {
     return this.#bl.getAllEdges();
   }
 
+  getAdjacencyList(code){
+    return this.#bl.getAdjacencyList(code);
+  }
+
   getMinPath(origin, destination) {
     return this.#bl.getMinPath(origin, destination);
   }

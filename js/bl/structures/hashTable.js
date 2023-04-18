@@ -1,26 +1,38 @@
 export default class HashTable {
-  #table;
+  #length = 0;
 
-  #length;
+  #table = []; // countries
 
   constructor(length) {
     this.#length = length;
-    this.#table = new Array(this.#length);
+    this.#table = new Array(this.#length); // tabla en la que se guardan los datos
   }
 
-  #hash(key) {
-    let sum = 0;
-    for (let i = 0; i < key.length; i += 1) {
-      sum += key.charCodeAt(i);
+  #hash(code) {
+    // Se inicia una variable hash en cero
+    let hash = 0;
+    // Se recorre cada caracter de la clave y se eleva al cuadrado el valor ASCII de cada uno,
+    // sumando el resultado a la variable hash
+    for (let i = 0; i < code.length; i += 1) {
+      hash += code.charCodeAt(i);
     }
-    const hash = (sum % this.#getPrime()) - 1;
+    // Se calcula el índice en la tabla hash utilizando la operación módulo (%) del tamaño de la tabla hash
+    let index = (hash % this.#getPrime()) - 1;
+    // En caso de que haya una colisión
+    // (ya existe un elemento en ese índice de la tabla hash con una clave diferente)
+    while (this.#table[index] !== undefined && this.#table[index].code !== code) {
+      index += 1;
+    }
+    // Finalmente, se devuelve el índice donde se almacenará el elemento en la tabla hash
 
-    return hash;
+    return index;
   }
 
   #getPrime() {
     let n = this.#length;
-    if (n && 1) {
+    // All prime numbers are odd except two
+    // eslint-disable-next-line no-bitwise
+    if (n & 1) {
       n -= 2;
     } else {
       n -= 1;
@@ -44,51 +56,35 @@ export default class HashTable {
     return 2;
   }
 
-  add(key, value) {
-    let hash = this.#hash(key);
-    if (this.#table[hash] === undefined) {
-      this.#table[hash] = { key, value };
-      return this.#table[hash].value;
-    }
-    while (this.#table[hash] !== undefined) {
-      hash += 1;
-    }
-    this.#table[hash] = { key, value };
+  set(code, value) {
+    const indice = this.#hash(code);
+    this.#table[indice] = { code, value };
+  }
 
+  get(code) {
+    const hash = this.#hash(code);
     return this.#table[hash].value;
   }
 
-  get(key) {
-    let hash = this.#hash(key);
+  delete(code) {
+    const index = this.#hash(code);
 
-    while (this.#table[hash] !== undefined) {
-      if (this.#table[hash].key === key) {
-        return this.#table[hash].value;
-      }
-      hash += 1;
+    if (this.#table[index] && this.#table[index].length) {
+      this.#table[index] = [];
+      return true;
     }
-
-    return undefined;
+    return false;
   }
 
-  getAll() {
-    return this.#table.map((element) => element.value);
+  getIndexByKey(code) {
+    return this.#hash(code);
   }
 
   getValueByIndex(index) {
     return this.#table[index]?.value;
   }
 
-  getIndexByKey(key) {
-    let hash = this.#hash(key);
-
-    while (this.#table[hash] !== undefined) {
-      if (this.#table[hash].key === key) {
-        return hash;
-      }
-      hash += 1;
-    }
-
-    return undefined;
+  getAll() {
+    return this.#table.map((element) => element.value);
   }
 }
