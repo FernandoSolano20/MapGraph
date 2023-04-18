@@ -1,33 +1,41 @@
+import HashTable from "./hashTable";
 import haversine from '../util/haversine';
 import Country from './country';
 
 export default class Graph {
   // Hash table to create
-  #countries = [];
+  #countries;
 
   #edges = null;
 
   #length = 0;
 
+
+
   constructor(countries) {
+
     this.#length = countries.length;
     this.#edges = new Array(this.#length);
+    this.#countries = new HashTable(this.#length);// Se cambio el .length por el  #hashTableSize
     for (let i = 0; i < this.#length; i += 1) {
       const country = new Country(countries[i]);
+      this.#countries.set(country.code,country);
+      const index = this.#countries.getIndexByKey(country.code);
       // Create the Hash method to insert the country
       // the variable i must match with the index of the hash
-      this.#countries[i] = country;
-      this.#edges[i] = new Array(this.#length);
+      this.#edges[index] = new Array(this.#length); // se cambio el i que estaba dentro del arreglo por un index
       for (let j = 0; j < this.#length; j += 1) {
-        this.#edges[i][j] = Infinity;
+        this.#edges[index][j] = Infinity; // Se cambio el i por index
       }
     }
+    
 
     for (let i = 0; i < this.#length; i += 1) {
       const country = countries[i];
-      const originIndex = this.#getIndexByKey(country.cca3);
+      const originIndex = this.#countries.getIndexByKey(country.cca3);
+       // Se cambio el #getIndexByKey por el metodo hash 
       country?.borders.forEach((key) => {
-        const destinationIndex = this.#getIndexByKey(key);
+        const destinationIndex = this.#countries.getIndexByKey(key); // Se cambio el #getIndexByKey por el metodo hash 
         if (this.#countries[destinationIndex]?.coordinates) {
           this.#edges[originIndex][destinationIndex] = haversine(
             this.#countries[originIndex].coordinates,
@@ -38,13 +46,9 @@ export default class Graph {
     }
   }
 
-  #getIndexByKey(key) {
-    return this.#countries.findIndex((country) => country.code === key);
-  }
-
   getAllNodes() {
     const values = [];
-    this.#countries.forEach((country) => {
+    this.#countries.getAll().forEach((country) => {
       values.push(country);
     });
     return values;
@@ -71,3 +75,4 @@ export default class Graph {
     return values;
   }
 }
+
