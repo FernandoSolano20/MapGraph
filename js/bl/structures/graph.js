@@ -70,47 +70,70 @@ export default class Graph {
       if (next === start) {
         break;
       }
-      next = table[next].vertex;
+      next = table[next];
+    }
+
+    if (path.length) {
+      path.unshift(this.#countries.get(next).name);
     }
 
     return path;
   }
 
+  // https://medium.com/codex/dijkstras-algorithm-16c14151f89c
   #dijkstra(origin, destination, orden = 1) {
     const map = this.#formatGraph(orden);
+    const distances = {};
+    const visitedNodes = [];
+    const unvisitedNodes = [];
+    const queue = [];
+    const previousVertex = {};
 
-    const visited = [];
-    const unvisited = [origin];
-    const shortestDistances = { [origin]: { vertex: this.#countries.get(origin), cost: 0 } };
+    for (let i = 0; i < this.#length; i += 1) {
+      const code = this.#countries.getValueByIndex(i).code;
+      if (code !== origin) {
+        distances[code] = Infinity;
+        unvisitedNodes.push(code);
+      }
+    }
+    distances[origin] = 0;
+    queue.push(origin);
 
-    let vertex = unvisited.shift();
-    while (vertex) {
-      // Explore unvisited neighbors
-      const neighbors = map[vertex].filter((n) => !visited.includes(n.vertex.code));
+    while (queue.length) {
+      // get the node with the smallest distance from the queue
+      const currentNode = queue.shift();
+      visitedNodes.push(currentNode);
+      const neighbors = map[currentNode];
 
       // Add neighbors to the unvisited list
-      unvisited.push(...neighbors.map((n) => n.vertex.code));
-
-      const costToVertex = shortestDistances[vertex].cost;
+      const unvisitedBeighbors = neighbors.filter((n) => !visitedNodes.includes(n.vertex.code));
+      const costToVertex = distances[currentNode];
 
       // eslint-disable-next-line no-restricted-syntax
-      for (const { vertex: to, cost } of neighbors) {
-        const currCostToNeighbor = shortestDistances[to.code] && shortestDistances[to.code].cost;
+      for (const { vertex: to, cost } of unvisitedBeighbors) {
+        const currCostToNeighbor = distances[to.code];
         const newCostToNeighbor = costToVertex + cost;
-        if (currCostToNeighbor === undefined || newCostToNeighbor < currCostToNeighbor) {
-          // Update the table
-          shortestDistances[to.code] = { vertex, cost: newCostToNeighbor };
+        if (newCostToNeighbor < currCostToNeighbor) {
+          distances[to.code] = newCostToNeighbor;
+          previousVertex[to.code] = currentNode;
         }
       }
 
-      visited.push(vertex);
-      vertex = unvisited.shift();
+      if (unvisitedBeighbors.length) {
+        const getLowestPath = unvisitedBeighbors.reduce((prev, current) =>
+          distances[prev.vertex.code] < distances[current.vertex.code] ? prev : current
+        );
+
+        queue.push(getLowestPath.vertex.code);
+      }
     }
 
     return {
-      path: this.#tracePath(shortestDistances, origin, destination),
-      cost: (shortestDistances[destination]?.cost || 0) * orden,
+      path: this.#tracePath(previousVertex, origin, destination),
+      cost: (distances[destination] || 0) * orden,
     };
+  }
+
   getAllNodes() {
     const values = [];
     this.#countries.getAll().forEach((country) => {
@@ -129,8 +152,8 @@ export default class Graph {
           if (destination !== Infinity) {
             values.push({
               data: {
-              source: this.#countries.getValueByIndex(i)?.code,
-              target: this.#countries.getValueByIndex(j)?.code,
+                source: this.#countries.getValueByIndex(i)?.code,
+                target: this.#countries.getValueByIndex(j)?.code,
                 value: destination,
               },
             });

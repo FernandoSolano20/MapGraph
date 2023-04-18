@@ -8,24 +8,24 @@ export default class HashTable {
     this.#table = new Array(this.#length); // tabla en la que se guardan los datos
   }
 
-  #hash(code) {
+  #hash(key) {
     // Se inicia una variable hash en cero
-    let hash = 0;
+    let sum = 0;
     // Se recorre cada caracter de la clave y se eleva al cuadrado el valor ASCII de cada uno,
     // sumando el resultado a la variable hash
-    for (let i = 0; i < code.length; i += 1) {
-      hash += code.charCodeAt(i);
+    for (let i = 0; i < key.length; i += 1) {
+      sum += key.charCodeAt(i);
     }
     // Se calcula el índice en la tabla hash utilizando la operación módulo (%) del tamaño de la tabla hash
-    let index = (hash % this.#getPrime()) - 1;
+    let hash = (sum % this.#getPrime()) - 1;
     // En caso de que haya una colisión
     // (ya existe un elemento en ese índice de la tabla hash con una clave diferente)
-    while (this.#table[index] !== undefined && this.#table[index].code !== code) {
-      index += 1;
+    while (this.#table[hash] !== undefined && this.#table[hash].key !== key) {
+      hash += 1;
     }
     // Finalmente, se devuelve el índice donde se almacenará el elemento en la tabla hash
 
-    return index;
+    return hash;
   }
 
   #getPrime() {
@@ -56,18 +56,18 @@ export default class HashTable {
     return 2;
   }
 
-  set(code, value) {
-    const indice = this.#hash(code);
-    this.#table[indice] = { code, value };
+  set(key, value) {
+    const hash = this.#hash(key);
+    this.#table[hash] = { key, value };
   }
 
-  get(code) {
-    const hash = this.#hash(code);
+  get(key) {
+    const hash = this.#hash(key);
     return this.#table[hash].value;
   }
 
-  delete(code) {
-    const index = this.#hash(code);
+  delete(key) {
+    const index = this.#hash(key);
 
     if (this.#table[index] && this.#table[index].length) {
       this.#table[index] = [];
@@ -76,12 +76,12 @@ export default class HashTable {
     return false;
   }
 
-  getIndexByKey(code) {
-    return this.#hash(code);
+  getIndexByKey(key) {
+    return this.#hash(key);
   }
 
-  getValueByIndex(index) {
-    return this.#table[index]?.value;
+  getValueByIndex(key) {
+    return this.#table[key]?.value;
   }
 
   getAll() {
