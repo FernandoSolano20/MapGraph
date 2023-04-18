@@ -12,8 +12,8 @@ export default class Controller {
     return result;
   }
 
-  getAllNodes() {
-    return this.#bl.getAllNodes();
+  getAllCountries() {
+    return this.#bl.getAllCountries();
   }
 
   getAllEdges() {

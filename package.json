@@ -17,7 +17,7 @@
     "browser-sync-webpack-plugin": "^2.3.0",
     "css-loader": "^6.7.3",
     "cytoscape": "^3.23.0",
-    "cytoscape-avsdf": "^1.0.0",
+    "cytoscape-cose-bilkent": "^4.1.0",
     "directory-named-webpack-plugin": "^4.0.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",
@@ -29,6 +29,7 @@
     "remove-files-webpack-plugin": "^1.5.0",
     "sass": "^1.62.0",
     "sass-loader": "^13.2.2",
+    "sweetalert2": "^11.7.3",
     "terser-webpack-plugin": "^5.3.7",
     "webpack-assets-manifest": "^5.1.0",
     "webpack-bundle-analyzer": "^4.8.0"
