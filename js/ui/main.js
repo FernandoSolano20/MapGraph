@@ -123,3 +123,21 @@ controller.createGraph().then(() => {
     }
   });
 });
+navigator.geolocation.getCurrentPosition(fn_ok, fn_error);
+
+var divMapa = document.getElementById("mapa");
+
+function fn_error(){
+    divMapa.innerHTML= 'Hubo un problema solicitando los datos';
+}
+
+function fn_ok( respuesta ){
+    var latitud = respuesta.coords.latitude;
+    var lon = respuesta.coords.longitude;
+    divMapa.innerHTML = latitud + ', ' + lon;
+}
+function mostrar_objeto( obj){
+  for(var prop in obj){
+    document.write( prop+ " : " + obj[prop] + '<br> />');
+  }
+}
