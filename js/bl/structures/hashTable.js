@@ -1,66 +1,90 @@
 export default class HashTable {
+  #length = 0;
 
-    #length = 0;
+  #table = []; // countries
 
-    #tabla = [];// countries
+  constructor(length) {
+    this.#length = length;
+    this.#table = new Array(this.#length); // tabla en la que se guardan los datos
+  }
 
-    // this.#countries = new Array(this.#length);// Se cambio el .length por el  #hashTableSize
+  #hash(code) {
+    // Se inicia una variable hash en cero
+    let hash = 0;
+    // Se recorre cada caracter de la clave y se eleva al cuadrado el valor ASCII de cada uno,
+    // sumando el resultado a la variable hash
+    for (let i = 0; i < code.length; i += 1) {
+      hash += code.charCodeAt(i);
+    }
+    // Se calcula el índice en la tabla hash utilizando la operación módulo (%) del tamaño de la tabla hash
+    let index = (hash % this.#getPrime()) - 1;
+    // En caso de que haya una colisión
+    // (ya existe un elemento en ese índice de la tabla hash con una clave diferente)
+    while (this.#table[index] !== undefined && this.#table[index].code !== code) {
+      index += 1;
+    }
+    // Finalmente, se devuelve el índice donde se almacenará el elemento en la tabla hash
 
+    return index;
+  }
 
-    constructor(length) {
-        this.#length=length
-        this.tabla = new Array(this.#length);// tabla en la que se guardan los datos
-       
+  #getPrime() {
+    let n = this.#length;
+    // All prime numbers are odd except two
+    // eslint-disable-next-line no-bitwise
+    if (n & 1) {
+      n -= 2;
+    } else {
+      n -= 1;
     }
 
-    #hash(llave) {
-        // Se inicia una variable hash en cero
-        let hash = 0;
-        // Se recorre cada caracter de la clave y se eleva al cuadrado el valor ASCII de cada uno,
-        // sumando el resultado a la variable hash
-        for (let i = 0; i < llave.length; i += 1) {
-            hash += llave.charCodeAt(i) ** 2;
+    let i;
+    let j;
+    for (i = n; i >= 2; i -= 2) {
+      if (i % 2 !== 0) {
+        for (j = 3; j <= Math.sqrt(i); j += 2) {
+          if (i % j === 0) {
+            break;
+          }
         }
-        // Se calcula el índice en la tabla hash utilizando la operación módulo (%) del tamaño de la tabla hash
-        let index = hash % this.#length;
-        // En caso de que haya una colisión 
-        // (ya existe un elemento en ese índice de la tabla hash con una clave diferente)
-        while (this.#tabla[index] !== undefined && this.#tabla[index].code !== llave) {
-            index = (index + 1) % this.#length;
+        if (j > Math.sqrt(i)) {
+          return i;
         }
-        // Finalmente, se devuelve el índice donde se almacenará el elemento en la tabla hash 
-
-        return index;
+      }
     }
+    // It will only be executed when n is 3
+    return 2;
+  }
 
-    set(llave, valor) {
-        const indice = this.#hash(llave);
-        this.tabla[indice] = [llave, valor];
+  set(code, value) {
+    const indice = this.#hash(code);
+    this.#table[indice] = { code, value };
+  }
+
+  get(code) {
+    const hash = this.#hash(code);
+    return this.#table[hash].value;
+  }
+
+  delete(code) {
+    const index = this.#hash(code);
+
+    if (this.#table[index] && this.#table[index].length) {
+      this.#table[index] = [];
+      return true;
     }
+    return false;
+  }
 
-    get(llave) {
-        const objetivo = this.#hash(llave);
-        return this.table[objetivo];
-    }
+  getIndexByKey(code) {
+    return this.#hash(code);
+  }
 
-    remover(llave) {
-        const indice = this.#hash(llave);
+  getValueByIndex(index) {
+    return this.#table[index]?.value;
+  }
 
-        if (this.tabla[indice] && this.tabla[indice].length) {
-            this.tabla[indice] = [];
-            return true;
-        }
-        return false;
-
-    }
-
-    getIndexByKey(llave){
-     return  this.#hash(llave);
-    }
-
-    getAll(){
-        return this.#tabla;
-    }
+  getAll() {
+    return this.#table;
+  }
 }
-
-

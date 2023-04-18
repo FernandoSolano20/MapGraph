@@ -1,4 +1,4 @@
-import HashTable from "./hashTable";
+import HashTable from './hashTable';
 import haversine from '../util/haversine';
 import Country from './country';
 
@@ -10,16 +10,13 @@ export default class Graph {
 
   #length = 0;
 
-
-
   constructor(countries) {
-
     this.#length = countries.length;
     this.#edges = new Array(this.#length);
-    this.#countries = new HashTable(this.#length);// Se cambio el .length por el  #hashTableSize
+    this.#countries = new HashTable(this.#length); // Se cambio el .length por el  #hashTableSize
     for (let i = 0; i < this.#length; i += 1) {
       const country = new Country(countries[i]);
-      this.#countries.set(country.code,country);
+      this.#countries.set(country.code, country);
       const index = this.#countries.getIndexByKey(country.code);
       // Create the Hash method to insert the country
       // the variable i must match with the index of the hash
@@ -28,18 +25,17 @@ export default class Graph {
         this.#edges[index][j] = Infinity; // Se cambio el i por index
       }
     }
-    
 
     for (let i = 0; i < this.#length; i += 1) {
       const country = countries[i];
       const originIndex = this.#countries.getIndexByKey(country.cca3);
-       // Se cambio el #getIndexByKey por el metodo hash 
+      // Se cambio el #getIndexByKey por el metodo hash
       country?.borders.forEach((key) => {
-        const destinationIndex = this.#countries.getIndexByKey(key); // Se cambio el #getIndexByKey por el metodo hash 
-        if (this.#countries[destinationIndex]?.coordinates) {
+        const destinationIndex = this.#countries.getIndexByKey(key); // Se cambio el #getIndexByKey por el metodo hash
+        if (this.#countries.get(key)?.coordinates) {
           this.#edges[originIndex][destinationIndex] = haversine(
-            this.#countries[originIndex].coordinates,
-            this.#countries[destinationIndex].coordinates
+            this.#countries.get(country.cca3).coordinates,
+            this.#countries.get(key).coordinates
           ).toFixed(2);
         }
       });
@@ -63,8 +59,8 @@ export default class Graph {
         if (destination !== Infinity) {
           values.push({
             data: {
-              source: this.#countries[i].code,
-              target: this.#countries[j].code,
+              source: this.#countries.getValueByIndex(i)?.code,
+              target: this.#countries.getValueByIndex(j)?.code,
               value: destination,
             },
           });
@@ -75,4 +71,3 @@ export default class Graph {
     return values;
   }
 }
-
