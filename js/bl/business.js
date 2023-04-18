@@ -17,4 +17,8 @@ export default class Business {
   getAllEdges() {
     return this.#graph.getAllEdges();
   }
+
+  getAdjacencyList(code){
+    return this.#graph.getAdjacencyList(code);
+  }
 }

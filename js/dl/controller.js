@@ -19,4 +19,9 @@ export default class Controller {
   getAllEdges() {
     return this.#bl.getAllEdges();
   }
+
+  getAdjacencyList(code){
+    return this.#bl.getAdjacencyList(code);
+  }
+
 }
