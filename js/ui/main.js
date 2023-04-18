@@ -106,4 +106,20 @@ controller.createGraph().then(() => {
       Destino: ${formValues.destination}`);
     }
   });
+
+  document.querySelector('#adjacency_countries').addEventListener('click', async () => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Busqueda entre países',
+      html: `<label>Seleccione un país<label>${selectOriginCountry.html}`,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => ({
+        origin: document.getElementById('origin').value,
+      }),
+    });
+
+    if (formValues) {
+      Swal.fire(`${controller.getAdjacencyList(formValues.origin)}`);
+    }
+  });
 });

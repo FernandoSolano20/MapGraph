@@ -6,11 +6,11 @@ export default class Graph {
   // Hash table to create
   #countries;
 
-  #edges = null; 
+  #edges = null;
 
   #length = 0;
-  
-  constructor(countries) {       
+
+  constructor(countries) {
     this.#length = countries.length;
     this.#edges = new Array(this.#length);
     this.#countries = new HashTable(this.#length); // Se cambio el .length por el  #hashTableSize
@@ -39,7 +39,7 @@ export default class Graph {
           ).toFixed(2);
         }
       });
-    }    
+    }
   }
 
   getAllNodes() {
@@ -71,36 +71,28 @@ export default class Graph {
     return values;
   }
 
-  getAdjacencyList(code){
+  getAdjacencyList(code) {
     let msj = '';
     const countriesAdjacency = [];
     const country = this.#countries.get(code);
-    if(!country){
-      return "El país no se encontró";
+    if (!country) {
+      return 'El país no se encontró';
     }
 
     const originIndex = this.#countries.getIndexByKey(code);
     const origin = this.#edges[originIndex];
-    for(let j = 0; j < this.#length; j += 1){
+    for (let j = 0; j < this.#length; j += 1) {
       const destination = origin[j];
-      if(destination !== Infinity){
+      if (destination !== Infinity) {
         countriesAdjacency.push(this.#countries.getValueByIndex(j));
-      } 
+      }
     }
-    if(countriesAdjacency.length ===0){          
-      msj = "El país " + country.name + " no posee adyacencias";
-      
-    }else{
-      const adyacencyNames = countriesAdjacency.map((c)=>c.name);
-      msj = "El país " +country.name+ " posee adyacencia con " + adyacencyNames.join(", ");
+    if (countriesAdjacency.length === 0) {
+      msj = 'El país ' + country.name + ' no posee adyacencias';
+    } else {
+      const adyacencyNames = countriesAdjacency.map((c) => c.name);
+      msj = 'El país ' + country.name + ' posee adyacencia con ' + adyacencyNames.join(', ');
     }
-    console.log(msj);
     return msj;
-
   }
 }
-
-
-
-
-
