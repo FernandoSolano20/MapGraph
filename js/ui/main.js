@@ -135,9 +135,20 @@ function fn_ok( respuesta ){
     var latitud = respuesta.coords.latitude;
     var lon = respuesta.coords.longitude;
     divMapa.innerHTML = latitud + ', ' + lon;
+
+    var gLatLon = new google.maps.LatLng( latitud, lon);
+
+    var objConfig = {
+      zoom: 17,
+      center: gLatLon
+    }
+
+    var gMapa = new google.maps.Map(divMapa, objConfig);
 }
 function mostrar_objeto( obj){
   for(var prop in obj){
     document.write( prop+ " : " + obj[prop] + '<br> />');
   }
 }
+
+
