@@ -144,6 +144,30 @@ function fn_ok( respuesta ){
     }
 
     var gMapa = new google.maps.Map(divMapa, objConfig);
+    
+    var objConfingMarker = {
+      position:  gLatLon,
+      map: gMapa
+    }
+    var gMarker = new google.maps.Marker(objConfingMarker);
+
+    var gCoder = new google.maps.geocode();
+    var objInformacion = {
+      address: '5R74+RRF, Poasito, Provincia de Alajuela, Alajuela'
+    }
+    gCoder.geocode(objInformacion, fn_coder);
+
+    function fn_coder(datos){
+      var coordenadas = datos[0].geometry.location;
+
+      var config= {
+        map: gMapa,
+        position: coordenadas
+      }
+
+      var gMarkerDV = new google.maps.Marker(config);
+    }
+
 }
 function mostrar_objeto( obj){
   for(var prop in obj){
@@ -151,4 +175,26 @@ function mostrar_objeto( obj){
   }
 }
 
+var objConfigDR = {
+    map: gMapa
+}
+
+var objConfigDS = {
+    origin: gLatLon ,
+    destination: '5R74+RRF, Poasito, Provincia de Alajuela, Alajuela',
+    travelMode: google.maps.TravelMode.DRIVING
+}
+
+var ds = new google.maps.DirectionsService(); //obtiene coordenadas
+
+var dr = new google.maps.DirectionsRenderer(objConfigDR);// traduce coordenadas a la ruta visible
+
+function fn_rutear(resultados, status){
+    if(status == 'OK'){
+      dr.setDirections( resultados);
+    }else{
+      alert('Error' + status);
+    }
+}
+ds.route(objConfigDS, fn_rutear);
 
