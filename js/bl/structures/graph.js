@@ -50,6 +50,7 @@ export default class Graph {
     const visitedNodes = [];
     const queue = [];
     const previousVertex = {};
+    let attemps = 0;
 
     for (let i = 0; i < this.#length; i += 1) {
       const code = this.#countries.getValueByIndex(i).code;
@@ -87,6 +88,14 @@ export default class Graph {
         );
 
         queue.push(getLowestPath.vertex.code);
+      } else if (!visitedNodes.includes(destination)) {
+        const codeToRetry = visitedNodes.shift();
+        if (codeToRetry === origin) {
+          attemps += 1;
+        }
+        if (attemps <= 10) {
+          queue.push(codeToRetry);
+        }
       }
     }
 
