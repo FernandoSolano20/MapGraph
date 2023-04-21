@@ -18,7 +18,11 @@ export default class Business {
     return this.#graph.getAllEdges();
   }
 
-  getAdjacencyList(code){
+  getAdjacencyList(code) {
     return this.#graph.getAdjacencyList(code);
+  }
+
+  getCountry(code) {
+    return this.#graph.getItem(code);
   }
 }

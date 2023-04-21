@@ -20,8 +20,11 @@ export default class Controller {
     return this.#bl.getAllEdges();
   }
 
-  getAdjacencyList(code){
+  getAdjacencyList(code) {
     return this.#bl.getAdjacencyList(code);
   }
 
+  getCountry(code) {
+    return this.#bl.getCountry(code);
+  }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable import/no-extraneous-dependencies */
 import cytoscape from 'cytoscape';
 import coseBilkent from 'cytoscape-cose-bilkent';
@@ -102,8 +103,15 @@ controller.createGraph().then(() => {
     });
 
     if (formValues) {
-      Swal.fire(`Origen: ${formValues.origin}
-      Destino: ${formValues.destination}`);
+      const origin = controller.getCountry(formValues.origin).coordinates;
+      const destination = controller.getCountry(formValues.destination).coordinates;
+      Swal.fire({
+        html: `Seleccione un país<label>Origen: ${formValues.origin}
+        Destino: ${formValues.destination}
+        <a 
+        href="http://localhost:3000/map.html?originLatLng=${origin.lat}|${origin.lng}&destinationLatLng=${destination.lat}|${destination.lng}">
+        Ver mapa</a>`,
+      });
     }
   });
 
@@ -123,78 +131,3 @@ controller.createGraph().then(() => {
     }
   });
 });
-navigator.geolocation.getCurrentPosition(fn_ok, fn_error);
-
-var divMapa = document.getElementById("mapa");
-
-function fn_error(){
-    divMapa.innerHTML= 'Hubo un problema solicitando los datos';
-}
-
-function fn_ok( respuesta ){
-    var latitud = respuesta.coords.latitude;
-    var lon = respuesta.coords.longitude;
-    divMapa.innerHTML = latitud + ', ' + lon;
-
-    var gLatLon = new google.maps.LatLng( latitud, lon);
-
-    var objConfig = {
-      zoom: 17,
-      center: gLatLon
-    }
-
-    var gMapa = new google.maps.Map(divMapa, objConfig);
-    
-    var objConfingMarker = {
-      position:  gLatLon,
-      map: gMapa
-    }
-    var gMarker = new google.maps.Marker(objConfingMarker);
-
-    var gCoder = new google.maps.geocode();
-    var objInformacion = {
-      address: '5R74+RRF, Poasito, Provincia de Alajuela, Alajuela'
-    }
-    gCoder.geocode(objInformacion, fn_coder);
-
-    function fn_coder(datos){
-      var coordenadas = datos[0].geometry.location;
-
-      var config= {
-        map: gMapa,
-        position: coordenadas
-      }
-
-      var gMarkerDV = new google.maps.Marker(config);
-    }
-
-}
-function mostrar_objeto( obj){
-  for(var prop in obj){
-    document.write( prop+ " : " + obj[prop] + '<br> />');
-  }
-}
-
-var objConfigDR = {
-    map: gMapa
-}
-
-var objConfigDS = {
-    origin: gLatLon ,
-    destination: '5R74+RRF, Poasito, Provincia de Alajuela, Alajuela',
-    travelMode: google.maps.TravelMode.DRIVING
-}
-
-var ds = new google.maps.DirectionsService(); //obtiene coordenadas
-
-var dr = new google.maps.DirectionsRenderer(objConfigDR);// traduce coordenadas a la ruta visible
-
-function fn_rutear(resultados, status){
-    if(status == 'OK'){
-      dr.setDirections( resultados);
-    }else{
-      alert('Error' + status);
-    }
-}
-ds.route(objConfigDS, fn_rutear);
-

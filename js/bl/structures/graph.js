@@ -95,4 +95,8 @@ export default class Graph {
     }
     return msj;
   }
+
+  getItem(code) {
+    return this.#countries.get(code);
+  }
 }

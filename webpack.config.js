@@ -17,6 +17,7 @@ const stylesEntryFiles = {
 // a list of the entry files used to generate scripts bundles.
 const scriptsEntryFiles = {
   main: './js/ui/main.js',
+  map: './js/ui/map.js',
 };
 
 const entryFiles = { ...stylesEntryFiles, ...scriptsEntryFiles };
