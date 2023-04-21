@@ -43,39 +43,6 @@ export default class Graph {
     }
   }
 
-  #getAllAdjacencyIndexes(array) {
-    return array.reduce((acc, value, index) => (value !== Infinity ? [...acc, index] : acc), []);
-  }
-
-  #formatGraph(orden) {
-    const tmp = {};
-    this.#edges.forEach((originEdge, originIndex) => {
-      const indexes = this.#getAllAdjacencyIndexes(originEdge);
-      const origin = this.#countries.getValueByIndex(originIndex);
-      const values = indexes.map((index) => ({
-        vertex: this.#countries.getValueByIndex(index),
-        cost: originEdge[index] * orden,
-      }));
-      tmp[origin.code] = values;
-    });
-    return tmp;
-  }
-
-  #tracePath(table, start, end) {
-    const path = [];
-    let next = end;
-
-    while (table[next] !== undefined) {
-      path.unshift(this.#countries.get(next).name);
-      if (next === start) {
-        break;
-      }
-      next = table[next];
-    }
-
-    return path;
-  }
-
   // https://medium.com/codex/dijkstras-algorithm-16c14151f89c
   #dijkstra(origin, destination, orden = 1) {
     const map = this.#formatGraph(orden);
@@ -127,6 +94,39 @@ export default class Graph {
       path: this.#tracePath(previousVertex, origin, destination),
       cost: (distances[destination] || 0) * orden,
     };
+  }
+
+  #getAllAdjacencyIndexes(array) {
+    return array.reduce((acc, value, index) => (value !== Infinity ? [...acc, index] : acc), []);
+  }
+
+  #formatGraph(orden) {
+    const tmp = {};
+    this.#edges.forEach((originEdge, originIndex) => {
+      const indexes = this.#getAllAdjacencyIndexes(originEdge);
+      const origin = this.#countries.getValueByIndex(originIndex);
+      const values = indexes.map((index) => ({
+        vertex: this.#countries.getValueByIndex(index),
+        cost: originEdge[index] * orden,
+      }));
+      tmp[origin.code] = values;
+    });
+    return tmp;
+  }
+
+  #tracePath(table, start, end) {
+    const path = [];
+    let next = end;
+
+    while (table[next] !== undefined) {
+      path.unshift(this.#countries.get(next).name);
+      if (next === start) {
+        break;
+      }
+      next = table[next];
+    }
+
+    return path;
   }
 
   getAllNodes() {
