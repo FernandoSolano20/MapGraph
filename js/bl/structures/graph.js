@@ -50,7 +50,6 @@ export default class Graph {
     const visitedNodes = [];
     const queue = [];
     const previousVertex = {};
-    let attemps = 0;
 
     for (let i = 0; i < this.#length; i += 1) {
       const code = this.#countries.getValueByIndex(i).code;
@@ -92,10 +91,7 @@ export default class Graph {
         queue.push(getLowestPath.vertex.code);
       } else if (!visitedNodes.includes(destination)) {
         // Retry if the destination is not found yet
-        if (map[origin].length - 1 > attemps) {
-          if (origin === currentNode) {
-            attemps += 1;
-          }
+        if (origin !== currentNode) {
           const lastKey = visitedNodes.pop();
           const currentUnvisitedNodeSize = neighbors.filter((n) => !visitedNodes.includes(n.vertex.code)).length;
           if (currentUnvisitedNodeSize > 1) {
