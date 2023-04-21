@@ -65,7 +65,9 @@ export default class Graph {
     while (queue.length) {
       // get the node with the smallest distance from the queue
       const currentNode = queue.shift();
-      visitedNodes.push(currentNode);
+      if (!visitedNodes.includes(currentNode)) {
+        visitedNodes.push(currentNode);
+      }
       const neighbors = map[currentNode];
 
       // Add neighbors to the unvisited list
@@ -89,12 +91,19 @@ export default class Graph {
 
         queue.push(getLowestPath.vertex.code);
       } else if (!visitedNodes.includes(destination)) {
-        const codeToRetry = visitedNodes.shift();
-        if (codeToRetry === origin) {
-          attemps += 1;
-        }
-        if (attemps <= 10) {
-          queue.push(codeToRetry);
+        // Retry if the destination is not found yet
+        if (map[origin].length - 1 > attemps) {
+          if (origin === currentNode) {
+            attemps += 1;
+          }
+          const lastKey = visitedNodes.pop();
+          const currentUnvisitedNodeSize = neighbors.filter((n) => !visitedNodes.includes(n.vertex.code)).length;
+          if (currentUnvisitedNodeSize > 1) {
+            visitedNodes.push(lastKey);
+          } else {
+            visitedNodes.unshift(lastKey);
+          }
+          queue.push(lastKey);
         }
       }
     }
