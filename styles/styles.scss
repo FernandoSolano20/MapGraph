@@ -19,3 +19,9 @@
 #swal2-html-container {
   overflow: hidden;
 }
+
+@media screen and (max-width: 991px) {
+  #graph {
+    height: 80vh;
+  }
+}

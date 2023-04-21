@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 const url = new URLSearchParams(window.location.search);
 const originLatLng = url.get('originLatLng').split('|');
 const originLat = +originLatLng[0];
@@ -38,7 +40,7 @@ window.initMap = () => {
       html += '</ul>';
       path.innerHTML = html;
     } else {
-      alert('Error' + status);
+      Swal.fire(`Google maps tiene problemas con la ruta`);
     }
   }
   ds.route(objConfigDS, fnRutear);
