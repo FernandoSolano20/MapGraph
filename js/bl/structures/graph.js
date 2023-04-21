@@ -185,15 +185,15 @@ export default class Graph {
     return msj;
   }
 
-  getCountryByCode(code) {
-    return this.#countries.get(code);
-  }
-
   getMinPath(origin, destination) {
     return this.#dijkstra(origin, destination);
   }
 
   getMaxPath(origin, destination) {
     return this.#dijkstra(origin, destination, -1);
+  }
+
+  getItem(code) {
+    return this.#countries.get(code);
   }
 }

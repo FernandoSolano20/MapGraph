@@ -1,9 +1,11 @@
 {
   "modules/main.js": "modules/main.js",
+  "modules/map.js": "modules/map.js",
   "modules/modules/main-1f3683ce7b3ac9dd96ce.js.license.txt": "modules/main-1f3683ce7b3ac9dd96ce.js.LICENSE.txt",
   "modules/modules/main-2de3ade24ce4ed54a450.js.license.txt": "modules/main-2de3ade24ce4ed54a450.js.LICENSE.txt",
   "modules/modules/main-80ac868f810e85fad474.js.license.txt": "modules/main-80ac868f810e85fad474.js.LICENSE.txt",
   "modules/modules/main.js.license.txt": "modules/main.js.LICENSE.txt",
+  "modules/modules/map.js.license.txt": "modules/map.js.LICENSE.txt",
   "modules/modules/styles-1f3683ce7b3ac9dd96ce.js.license.txt": "modules/styles-1f3683ce7b3ac9dd96ce.js.LICENSE.txt",
   "modules/modules/styles-2de3ade24ce4ed54a450.js.license.txt": "modules/styles-2de3ade24ce4ed54a450.js.LICENSE.txt",
   "modules/modules/styles-80ac868f810e85fad474.js.license.txt": "modules/styles-80ac868f810e85fad474.js.LICENSE.txt",

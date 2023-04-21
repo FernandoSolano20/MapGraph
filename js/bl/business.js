@@ -18,7 +18,7 @@ export default class Business {
     return this.#graph.getAllEdges();
   }
 
-  getAdjacencyList(code){
+  getAdjacencyList(code) {
     return this.#graph.getAdjacencyList(code);
   }
 
@@ -31,6 +31,6 @@ export default class Business {
   }
 
   getCountryByCode(code) {
-    return this.#graph.getCountryByCode(code);
+    return this.#graph.getItem(code);
   }
 }

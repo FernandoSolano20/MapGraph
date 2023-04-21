@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import cytoscape from 'cytoscape';
 import coseBilkent from 'cytoscape-cose-bilkent';
 import Swal from 'sweetalert2';
@@ -104,7 +103,15 @@ controller.createGraph().then(() => {
     if (formValues) {
       const result = controller.getMinPath(formValues.origin, formValues.destination);
       if (result.path.length) {
-        Swal.fire(`El camino mínimo es: ${result.path.join(' -> ')} con una distancia de ${result.cost.toFixed(2)} km`);
+        const origin = controller.getCountryByCode(formValues.origin).coordinates;
+        const destination = controller.getCountryByCode(formValues.destination).coordinates;
+        Swal.fire({
+          html: `El camino mínimo es: ${result.path.join(' -> ')} con una distancia de ${result.cost.toFixed(2)} km <a 
+          href="http://localhost:3000/map.html?originLatLng=${origin.lat}|${origin.lng}&destinationLatLng=${
+            destination.lat
+          }|${destination.lng}">
+          Ver en mapa</a>`,
+        });
       } else {
         const countryOrigin = controller.getCountryByCode(formValues.origin);
         const countryDestination = controller.getCountryByCode(formValues.destination);
@@ -129,7 +136,15 @@ controller.createGraph().then(() => {
     if (formValues) {
       const result = controller.getMaxPath(formValues.origin, formValues.destination);
       if (result.path.length) {
-        Swal.fire(`El camino máximo es: ${result.path.join(' -> ')} con una distancia de ${result.cost.toFixed(2)} km`);
+        const origin = controller.getCountryByCode(formValues.origin).coordinates;
+        const destination = controller.getCountryByCode(formValues.destination).coordinates;
+        Swal.fire({
+          html: `El camino máximo es: ${result.path.join(' -> ')} con una distancia de ${result.cost.toFixed(2)} km <a 
+          href="http://localhost:3000/map.html?originLatLng=${origin.lat}|${origin.lng}&destinationLatLng=${
+            destination.lat
+          }|${destination.lng}">
+          Ver en mapa</a>`,
+        });
       } else {
         const countryOrigin = controller.getCountryByCode(formValues.origin);
         const countryDestination = controller.getCountryByCode(formValues.destination);
