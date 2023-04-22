@@ -7,6 +7,7 @@ const RemovePlugin = require('remove-files-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const isDevelopment = true;
 
@@ -107,12 +108,24 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'styles/[name].css',
     }),
+
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+      chunks: ['main', 'styles'],
+      hash: true,
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'map.html',
+      template: 'map.html',
+      chunks: ['map', 'styles'],
+      hash: true,
+    }),
     new BrowserSyncPlugin({
       // browse to http://localhost:3000/ during development,
       // ./public directory is being served
       host: 'localhost',
       port: 3000,
-      server: { baseDir: ['./'] },
+      server: { baseDir: ['./dist/'] },
     }),
   ],
   resolve: {

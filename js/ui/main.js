@@ -140,9 +140,9 @@ controller.createGraph().then(() => {
         const destination = controller.getCountryByCode(formValues.destination).coordinates;
         Swal.fire({
           html: `El camino máximo es: ${result.path.join(' -> ')} con una distancia de ${result.cost.toFixed(2)} km <a 
-          href="http://localhost:3000/map.html?originLatLng=${origin.lat}|${origin.lng}&destinationLatLng=${
-            destination.lat
-          }|${destination.lng}" target="_blank">
+          href="/map.html?originLatLng=${origin.lat}|${origin.lng}&destinationLatLng=${destination.lat}|${
+            destination.lng
+          }" target="_blank">
           Ver en mapa</a>`,
         });
       } else {
