@@ -34,7 +34,7 @@ module.exports = {
   context: path.resolve(__dirname, './'),
   entry: entryFiles,
   output: {
-    filename: 'modules/[name].js',
+    filename: 'modules/[name]-[fullhash].js',
     path: path.join(__dirname, 'dist'),
     clean: true,
   },
@@ -106,19 +106,17 @@ module.exports = {
 
     // bundle SASS and CSS files.
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].css',
+      filename: 'styles/[name]-[fullhash].css',
     }),
 
     new HtmlWebpackPlugin({
       template: 'index.html',
       chunks: ['main', 'styles'],
-      hash: true,
     }),
     new HtmlWebpackPlugin({
       filename: 'map.html',
       template: 'map.html',
       chunks: ['map', 'styles'],
-      hash: true,
     }),
     new BrowserSyncPlugin({
       // browse to http://localhost:3000/ during development,
