@@ -111,12 +111,12 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       template: 'index.html',
-      chunks: ['main', 'styles'],
+      chunks: ['main'],
     }),
     new HtmlWebpackPlugin({
       filename: 'map.html',
       template: 'map.html',
-      chunks: ['map', 'styles'],
+      chunks: ['map'],
     }),
     new BrowserSyncPlugin({
       // browse to http://localhost:3000/ during development,

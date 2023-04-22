@@ -1,3 +1,4 @@
+import '../../styles/styles.scss';
 import cytoscape from 'cytoscape';
 import coseBilkent from 'cytoscape-cose-bilkent';
 import Swal from 'sweetalert2';

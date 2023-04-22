@@ -1,3 +1,4 @@
+import '../../styles/styles.scss';
 import Swal from 'sweetalert2';
 
 const url = new URLSearchParams(window.location.search);
