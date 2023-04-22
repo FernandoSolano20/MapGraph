@@ -80,8 +80,8 @@ export default class HashTable {
     return this.#hash(key);
   }
 
-  getValueByIndex(key) {
-    return this.#table[key]?.value;
+  getValueByIndex(index) {
+    return this.#table[index]?.value;
   }
 
   getAll() {
